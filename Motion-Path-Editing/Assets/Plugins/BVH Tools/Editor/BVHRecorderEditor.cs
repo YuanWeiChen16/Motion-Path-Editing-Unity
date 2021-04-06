@@ -24,6 +24,12 @@ public class BVHRecorderEditor : Editor {
             Debug.Log("Cleared motion data.");
         }
 
+        if (GUILayout.Button("Build Skeleton"))
+        {
+            bvhRecorder.buildSkeleton();
+            Debug.Log("Build Skeleton");
+        }
+
         if (GUILayout.Button("Save motion to BVH file")) {
             try {
                 //bvhRecorder.genHierarchy();

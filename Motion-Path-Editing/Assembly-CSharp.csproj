@@ -11,7 +11,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{40BEA004-CDD3-44FC-CAC2-581CA5DC7ECE}</ProjectGuid>
+    <ProjectGuid>{8DBC5E2E-6B43-FAE0-26CB-B69F3EA0D3AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -604,36 +604,36 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.15f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{9586E6A0-999C-9300-EC60-03ACC0B0D133}</Project>
+      <Project>{5BCC5D40-8593-592D-39EF-B4F0D6BF09B5}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
   </ItemGroup>

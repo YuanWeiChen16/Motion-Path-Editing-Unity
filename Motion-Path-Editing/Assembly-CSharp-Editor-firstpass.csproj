@@ -11,7 +11,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{52960B43-0565-6234-C8D5-2119BA9ED043}</ProjectGuid>
+    <ProjectGuid>{F09F518B-EEDC-F0AA-1846-9B162B3B8EF6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor-firstpass</AssemblyName>
@@ -260,7 +260,7 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.15f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -617,42 +617,42 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.15f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>D:/GameDesign/3DGame/MotionPath/motion path edting/motion path edting/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>D:/GameDesign/3DGame/MotionPath/Motion-Path-Editing-Unity/Motion-Path-Editing/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{9586E6A0-999C-9300-EC60-03ACC0B0D133}</Project>
+      <Project>{5BCC5D40-8593-592D-39EF-B4F0D6BF09B5}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
   </ItemGroup>

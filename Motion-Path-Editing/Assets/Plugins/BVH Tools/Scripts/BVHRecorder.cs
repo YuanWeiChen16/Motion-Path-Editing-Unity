@@ -50,7 +50,7 @@ public class BVHRecorder : MonoBehaviour {
     public int frameNumber = 0;
     [Tooltip("This field will be set to the filename written to by the saveBVH() function.")]
     public string lastSavedFile = "";
-
+    public bool getTarget = false;
     private Vector3 basePosition;
     private Vector3 offsetScale;
     private bool lowPrecision = false;
@@ -484,6 +484,19 @@ public class BVHRecorder : MonoBehaviour {
     }
     
     void LateUpdate () {
+        if (getTarget)
+        {
+            if (targetAvatar == null)
+            {
+                Debug.LogWarning("target Avator not found!");
+            }
+            else
+            {
+                buildSkeleton();
+                genHierarchy();
+            }
+            getTarget = false;
+        }
         if (frames == null || hierarchy == "" || !capturing) {
             lastFrame = Time.time;
             first = true;

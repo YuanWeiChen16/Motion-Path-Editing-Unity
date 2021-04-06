@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class BVHAnimationLoader : MonoBehaviour {
     [Header("Loader settings")]
@@ -368,6 +369,10 @@ public class BVHAnimationLoader : MonoBehaviour {
                 anim = targetAvatar.gameObject.AddComponent<Animation>();
             }
         }
+        string path = "Assets/" + clip.name + " - " + clipCount + ".anim";
+        AssetDatabase.CreateAsset(clip, path);
+        AssetDatabase.SaveAssets();
+
         anim.AddClip(clip, clip.name);
         anim.clip = clip;
         anim.playAutomatically = autoPlay;
