@@ -63,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CubicBezier.cs" />
-    <Compile Include="Assets\CurveFit.cs" />
+    <Compile Include="Assets\CurveEdit.cs" />
     <Compile Include="Assets\CurveFitBase.cs" />
     <Compile Include="Assets\CurveTool\CubicBezier.cs" />
     <Compile Include="Assets\CurveTool\CurveBuilder.cs" />
