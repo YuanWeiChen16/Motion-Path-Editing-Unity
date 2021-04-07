@@ -9,6 +9,12 @@ public class BVHRecorderEditor : Editor {
 
         BVHRecorder bvhRecorder = (BVHRecorder)target;
 
+        if (GUILayout.Button("Get Hierachy"))
+        {
+            bvhRecorder.genHierarchy();
+            Debug.Log("Get Hierachy done.");
+        }
+
         if (GUILayout.Button("Detect bones")) {
             bvhRecorder.getBones();
             Debug.Log("Bone detection done.");

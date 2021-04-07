@@ -28,7 +28,7 @@ using FLOAT = System.Double;
 using VECTOR = System.Numerics.Vector2;
 using FLOAT = System.Single;
 #elif UNITY
-using VECTOR = UnityEngine.Vector2;
+using VECTOR = UnityEngine.Vector3;
 using FLOAT = System.Single;
 #else
 #error Unknown vector type -- must define one of SYSTEM_WINDOWS_VECTOR, SYSTEM_NUMERICS_VECTOR or UNITY
