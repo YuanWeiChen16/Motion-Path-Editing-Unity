@@ -62,6 +62,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CubicBezier.cs" />
+    <Compile Include="Assets\CurveFit.cs" />
+    <Compile Include="Assets\CurveFitBase.cs" />
     <Compile Include="Assets\Fighter Pack Bundle FREE\Code\CameraControl.cs" />
     <Compile Include="Assets\Fighter Pack Bundle FREE\Code\FighterAnimationDemoFREE.cs" />
     <Compile Include="Assets\hermitesplineline.cs" />

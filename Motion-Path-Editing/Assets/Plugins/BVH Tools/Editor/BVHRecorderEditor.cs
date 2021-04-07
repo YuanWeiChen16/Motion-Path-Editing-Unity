@@ -13,7 +13,7 @@ public class BVHRecorderEditor : Editor {
             bvhRecorder.getBones();
             Debug.Log("Bone detection done.");
         }
-
+        
         if (GUILayout.Button("Remove empty entries from bone list")) {
             bvhRecorder.cleanupBones();
             Debug.Log("Cleaned up bones.");
