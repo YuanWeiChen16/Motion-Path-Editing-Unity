@@ -46,12 +46,20 @@ public class BVHAnimationLoader : MonoBehaviour {
     private Dictionary<string, string[]> boneToMuscles;
     private Dictionary<string, Transform> nameMap;
     private Dictionary<string, string> renamingMap;
-    List<GameObject> cpt = new List<GameObject>();
+    List<GameObject> line = new List<GameObject>();
     public float error = 0.03f;
     public float error2 = 3;
     List<Vector3> pos = new List<Vector3>();
-    public bool playOnCurve = false;
-    public int nowFrames = 0; 
+    List<Vector3> rot = new List<Vector3>();
+    List<float> arcLen = new List<float>();
+    List<Vector3> pts = new List<Vector3>();
+    List<Vector3> dpts = new List<Vector3>();
+    List<GameObject> cpts = new List<GameObject>();
+    List<burningmime.curves.CubicBezier> curves = new List<burningmime.curves.CubicBezier>();
+    [Range(0, 359)]
+    public int frameIndex = 0;
+    public GameObject front;
+    public GameObject cptPrefab;
     [Serializable]
     public struct FakeDictionary {
         public string bvhName;
@@ -348,46 +356,46 @@ public class BVHAnimationLoader : MonoBehaviour {
             throw new InvalidOperationException("No root bone \"" + bp.root.name + "\" found." );
         }
 
-        frames = bp.frames;
-        clip = new AnimationClip();
-        clip.name = "BVHClip (" + (clipCount++) + ")";
-        if (clipName != "") {
-            clip.name = clipName;
-        }
-        clip.legacy = true;
-        prefix = getPathBetween(rootBone, targetAvatar.transform, true, true);
+        //frames = bp.frames;
+        //clip = new AnimationClip();
+        //clip.name = "BVHClip (" + (clipCount++) + ")";
+        //if (clipName != "") {
+        //    clip.name = clipName;
+        //}
+        //clip.legacy = true;
+        //prefix = getPathBetween(rootBone, targetAvatar.transform, true, true);
 
-        Vector3 targetAvatarPosition = targetAvatar.transform.position;
-        Quaternion targetAvatarRotation = targetAvatar.transform.rotation;
-        targetAvatar.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
-        targetAvatar.transform.rotation = Quaternion.identity;
+        //Vector3 targetAvatarPosition = targetAvatar.transform.position;
+        //Quaternion targetAvatarRotation = targetAvatar.transform.rotation;
+        //targetAvatar.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+        //targetAvatar.transform.rotation = Quaternion.identity;
         
         
 
 
-        getCurves(prefix, bp.root, rootBone, true);
+        //getCurves(prefix, bp.root, rootBone, true);
         
-        targetAvatar.transform.position = targetAvatarPosition;
-        targetAvatar.transform.rotation = targetAvatarRotation;
+        //targetAvatar.transform.position = targetAvatarPosition;
+        //targetAvatar.transform.rotation = targetAvatarRotation;
         
-        clip.EnsureQuaternionContinuity();
-        if (anim == null) {
-            anim = targetAvatar.gameObject.GetComponent<Animation>();
-            if (anim == null) {
-                anim = targetAvatar.gameObject.AddComponent<Animation>();
-            }
-        }
-        string path = "Assets/" + clip.name + " - " + clipCount + ".anim";
-        AssetDatabase.CreateAsset(clip, path);
-        AssetDatabase.SaveAssets();
+        //clip.EnsureQuaternionContinuity();
+        //if (anim == null) {
+        //    anim = targetAvatar.gameObject.GetComponent<Animation>();
+        //    if (anim == null) {
+        //        anim = targetAvatar.gameObject.AddComponent<Animation>();
+        //    }
+        //}
+        //string path = "Assets/" + clip.name + " - " + clipCount + ".anim";
+        //AssetDatabase.CreateAsset(clip, path);
+        //AssetDatabase.SaveAssets();
 
-        anim.AddClip(clip, clip.name);
-        anim.clip = clip;
-        anim.playAutomatically = autoPlay;
+        //anim.AddClip(clip, clip.name);
+        //anim.clip = clip;
+        //anim.playAutomatically = autoPlay;
         
-        if (autoPlay) {
-            anim.Play(clip.name);
-        }
+        //if (autoPlay) {
+        //    anim.Play(clip.name);
+        //}
     }
 
     // This function doesn't call any Unity API functions and should be safe to call from another thread
@@ -427,8 +435,9 @@ public class BVHAnimationLoader : MonoBehaviour {
     {
         int frameNum = bp.frames;
 
-        List<Vector3> rot = new List<Vector3>();
+
         pos.Clear();
+        rot.Clear();
         BVHParser.BVHBone.BVHChannel[] channels = bp.root.channels;
 
         for (int i = 0; i < frameNum; i++)
@@ -442,62 +451,302 @@ public class BVHAnimationLoader : MonoBehaviour {
         }
         List<Vector3> reduced = CurvePreprocess.RdpReduce(pos, error);   // use the Ramer-Douglas-Pueker algorithm to remove unnecessary points
         Debug.Log(reduced.Count);
-        burningmime.curves.CubicBezier[] curves = CurveFit.Fit(reduced, error2);            // fit the curves to those points
-        if (cpt.Count < curves.Length)
+        curves.Clear();
+        curves.AddRange(CurveFit.Fit(reduced, error2));            // fit the curves to those points
+        createControlObj();
+
+        DrawMutiCurve();
+    }
+
+    public void createControlObj()
+    {
+        // Create Control Point
+        int maxControl = (curves.Count * 4 - (curves.Count - 1));
+        if (cpts.Count < maxControl)
         {
-            for (int i = cpt.Count; i < curves.Length; i++)
+            for (int i = cpts.Count; i < maxControl; i++)
             {
-                cpt.Add(new GameObject());
+                cpts.Add(Instantiate(cptPrefab));
+                cpts[cpts.Count - 1].transform.parent = GameObject.FindGameObjectWithTag("ControlPoints").transform;
             }
         }
-        else if (cpt.Count > curves.Length)
+        for (int i = 0; i < cpts.Count; i += 3)
         {
-            for (int i = cpt.Count - 1; i >= curves.Length; i--)
+            int offset = 0;
+            if (i / 4 > 0) offset = 1;
+
+            int curveIndex = i == 0 ? 0 : (i - 1) / 3;
+            cpts[i + 1 - offset].transform.position = curves[curveIndex].p1;
+            cpts[i + 2 - offset].transform.position = curves[curveIndex].p2;
+            cpts[i + 3 - offset].transform.position = curves[curveIndex].p3;
+            if (i == 0)
             {
-                Destroy(cpt[i]);
-                cpt.RemoveAt(i);
+                cpts[i].transform.position = curves[curveIndex].p0;
+                i++;
             }
         }
-        for (int i = 0; i < curves.Length; i++)
+
+        // Create Line GameObject
+        if (line.Count < curves.Count)
         {
-            DrawCurve(100, curves[i], i);
+            for (int i = line.Count; i < curves.Count; i++)
+            {
+                line.Add(new GameObject());
+                line[line.Count - 1].transform.parent = GameObject.FindGameObjectWithTag("Lines").transform;
+            }
+        }
+        else if (line.Count > curves.Count)
+        {
+            for (int i = line.Count - 1; i >= curves.Count; i--)
+            {
+                Destroy(line[i]);
+                line.RemoveAt(i);
+            }
         }
     }
+
+    public void FitAnimation()
+    {
+        DrawMutiCurve();
+        int frameNum = bp.frames;
+        float maxLen = arcLen[arcLen.Count - 1];
+        float eachLen = maxLen / frameNum;
+
+        List<Vector3> framePoint = new List<Vector3>();
+        List<Vector3> frameRot = new List<Vector3>();
+        framePoint.Add(pts[0]);
+        frameRot.Add(dpts[0]);
+        for (int i = 1; i < pts.Count; i++)
+        {
+            if (arcLen[i] > (eachLen * framePoint.Count))
+            {
+                framePoint.Add(pts[i]);
+                frameRot.Add(dpts[i]);
+            }
+        }
+        if (framePoint.Count < frameNum)
+        {
+            for (int i = framePoint.Count; i < frameNum; i++)
+            {
+                framePoint.Add(pts[pts.Count - 1]);
+                frameRot.Add(dpts[dpts.Count - 1]);
+            }
+        }
+
+        Transform rootbone = rootBone;
+        //for debug
+        //int index = frameIndex == (frameNum - 1) ? (frameIndex - 1) : frameIndex;
+        //rootbone.localPosition = new Vector3(framePoint[index].x, -framePoint[index].z, framePoint[index].y);
+        //Vector3 norm = framePoint[index + 1] - framePoint[index];
+        //norm = norm.normalized * 100;
+        //norm = framePoint[index] + norm;
+        //front.transform.localPosition = new Vector3(norm.x, -norm.z, norm.y);
+        //rootbone.LookAt(front.transform.position);
+        //rootbone.Rotate(new Vector3(0, 0, 1), -90);
+        //rootbone.Rotate(new Vector3(1, 0, 0), 90);
+
+        for (int i = 0; i < frameNum; i++)
+        {
+            int index = i == (frameNum - 1) ? (i - 1) : i;
+            rootbone.localPosition = new Vector3(framePoint[index].x, -framePoint[index].z, framePoint[index].y);
+            Vector3 norm = framePoint[index + 1] - framePoint[index];
+            norm = norm.normalized * 100;
+            norm = framePoint[index] + norm;
+            front.transform.localPosition = new Vector3(norm.x, -norm.z, norm.y);
+            rootbone.LookAt(front.transform.position);
+            rootbone.Rotate(new Vector3(0, 0, 1), -90);
+            rootbone.Rotate(new Vector3(1, 0, 0), 90);
+            Vector3 Position = new Vector3(framePoint[i].x, -framePoint[i].z, framePoint[i].y);
+            rootbone.Rotate(new Vector3(1, 0, 0), -90);
+            Quaternion q = rootbone.transform.localRotation;
+            Vector4 rot2 = new Vector4(q.x, -q.y, -q.z, q.w).normalized;
+            Vector3 angles = eulerZXY(rot2);
+            bp.root.channels[0].values[i] = -framePoint[i].x;
+            bp.root.channels[1].values[i] = -framePoint[i].z;
+            bp.root.channels[2].values[i] = framePoint[i].y;
+            bp.root.channels[3].values[i] = wrapAngle(angles.x);
+            bp.root.channels[4].values[i] = wrapAngle(angles.y);
+            bp.root.channels[5].values[i] = wrapAngle(angles.z);
+        }
+        frames = bp.frames;
+        clip = new AnimationClip();
+        clip.name = "BVHClip (" + (clipCount++) + ")";
+        if (clipName != "")
+        {
+            clip.name = clipName;
+        }
+        clip.legacy = true;
+        prefix = getPathBetween(rootBone, targetAvatar.transform, true, true);
+
+        Vector3 targetAvatarPosition = targetAvatar.transform.position;
+        Quaternion targetAvatarRotation = targetAvatar.transform.rotation;
+        targetAvatar.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+        targetAvatar.transform.rotation = Quaternion.identity;
+
+
+
+
+        getCurves(prefix, bp.root, rootBone, true);
+
+        targetAvatar.transform.position = targetAvatarPosition;
+        targetAvatar.transform.rotation = targetAvatarRotation;
+
+        clip.EnsureQuaternionContinuity();
+        if (anim == null)
+        {
+            anim = targetAvatar.gameObject.GetComponent<Animation>();
+            if (anim == null)
+            {
+                anim = targetAvatar.gameObject.AddComponent<Animation>();
+            }
+        }
+        string path = "Assets/" + clip.name + " - " + clipCount + ".anim";
+        AssetDatabase.CreateAsset(clip, path);
+        AssetDatabase.SaveAssets();
+
+        anim.AddClip(clip, clip.name);
+        anim.clip = clip;
+        anim.playAutomatically = autoPlay;
+
+        if (autoPlay)
+        {
+            anim.Play(clip.name);
+        }
+    }
+    // From: http://bediyap.com/programming/convert-quaternion-to-euler-rotations/
+    Vector3 manualEuler(float a, float b, float c, float d, float e)
+    {
+        Vector3 euler = new Vector3();
+        euler.z = Mathf.Atan2(a, b) * Mathf.Rad2Deg; // Z
+        euler.x = Mathf.Asin(Mathf.Clamp(c, -1f, 1f)) * Mathf.Rad2Deg;     // Y
+        euler.y = Mathf.Atan2(d, e) * Mathf.Rad2Deg; // X
+        return euler;
+    }
+
+    // Unity to BVH
+    Vector3 eulerZXY(Vector4 q)
+    {
+        return manualEuler(-2 * (q.x * q.y - q.w * q.z),
+                      q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z,
+                      2 * (q.y * q.z + q.w * q.x),
+                     -2 * (q.x * q.z - q.w * q.y),
+                      q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z); // ZXY
+    }
+
     private void OnDrawGizmos()
     {
-        for (int i = 0; i < pos.Count; i++)
-        {
-            Gizmos.DrawSphere(pos[i], 0.1f);
-        }
+        //for (int i = 0; i < pos.Count; i++)
+        //{
+        //    Gizmos.DrawSphere(pos[i], 0.1f);
+        //}
     }
+
     void DrawCurve(int c_numSamples, burningmime.curves.CubicBezier bezier, int index)
     {
         List<Vector3> drawpoint = new List<Vector3>();
         for (int i = 0; i < c_numSamples; ++i)
         {
-
             float percent = ((float)i) / (c_numSamples - 1);
 
             Vector3 drawpts = new Vector3();
             //drawpts = Hermitefunc(A, B, C, D, t);
             drawpts = bezier.Sample(percent);
             drawpoint.Add(drawpts);
+            pts.Add(drawpts);
+            dpts.Add(bezier.Tangent(percent));
+            if (arcLen.Count == 0)
+            {
+                arcLen.Add(0);
+            }
+            else
+            {
+                arcLen.Add(arcLen[arcLen.Count - 1] + Vector3.Distance(pts[pts.Count - 1], pts[pts.Count - 2]));
+            }
         }
         LineRenderer lineRenderer;
-        if (cpt[index].GetComponent<LineRenderer>() == null)
-            cpt[index].AddComponent<LineRenderer>();
-        lineRenderer = cpt[index].GetComponent<LineRenderer>();
+        if (line[index].GetComponent<LineRenderer>() == null)
+            line[index].AddComponent<LineRenderer>();
+        lineRenderer = line[index].GetComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Standard"));
         lineRenderer.sharedMaterial.SetColor("_Color", Color.red);
         lineRenderer.positionCount = drawpoint.Count;
         lineRenderer.SetPositions(drawpoint.ToArray());
 
     }
+
+    public void DrawMutiCurve()
+    {
+        // Draw Spline
+        arcLen.Clear();
+        pts.Clear();
+        dpts.Clear();
+        for (int i = 0; i < curves.Count; i++)
+        {
+            DrawCurve(200, curves[i], i);
+        }
+    }
+
+    public void reduceCurve()
+    {
+        if(curves.Count >= 2)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Destroy(cpts[cpts.Count - 1]);
+                cpts.RemoveAt(cpts.Count - 1);
+            }
+
+            Destroy(line[line.Count - 1]);
+            line.RemoveAt(line.Count - 1);
+            curves.RemoveAt(curves.Count - 1);
+
+        }
+    }
+
+    public void AddCurve()
+    {
+        burningmime.curves.CubicBezier last = curves[curves.Count - 1];
+        Vector3 dir = last.p3 - last.p2;
+        dir *= 2;
+        Vector3 p0 = last.p3 + dir;
+        Vector3 p1 = last.p3 + dir * 1.5f;
+        Vector3 p2 = last.p3 + dir * 2.25f;
+        Vector3 p3 = last.p3 + dir * 3f;
+        curves.Add(new burningmime.curves.CubicBezier(p0, p1, p2, p3));
+        createControlObj();
+    }
+
     void Start () {
         if (autoStart) {
             autoPlay = true;
             parseFile();
             loadAnimation();
         }
+    }
+
+    private void LateUpdate()
+    {
+        for (int i = 0, j = 0; i < cpts.Count; i += 3, j++)
+        {
+            int offset = 0;
+            if (i / 4 > 0) offset = 1;
+
+            int curveIndex = i == 0 ? 0 : (i - 1) / 3;
+            Vector3 p1 = cpts[i + 1 - offset].transform.position;
+            Vector3 p2 = cpts[i + 2 - offset].transform.position;
+            Vector3 p3 = cpts[i + 3 - offset].transform.position;
+            Vector3 p0 = Vector3.zero;
+            if (i == 0)
+            {
+                p0 = cpts[i].transform.position;
+                i++;
+            }
+            else
+            {
+                p0 = cpts[i - offset].transform.position;
+            }
+            curves[j] = new burningmime.curves.CubicBezier(p0, p1, p2, p3);
+        }
+        DrawMutiCurve();
     }
 }

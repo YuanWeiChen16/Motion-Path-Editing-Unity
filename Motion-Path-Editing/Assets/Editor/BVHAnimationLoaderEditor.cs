@@ -15,8 +15,27 @@ public class BVHAnimationLoaderEditor : Editor {
             bvhLoader.parseFile();
             bvhLoader.loadAnimation();
             bvhLoader.test();
-           
             Debug.Log("Loading animation done.");
+        }
+
+        if (GUILayout.Button("Fit animation"))
+        {
+            bvhLoader.FitAnimation();
+            Debug.Log("Fit Animation");
+        }
+
+        if (GUILayout.Button("Reduce Curve"))
+        {
+            bvhLoader.reduceCurve();
+            bvhLoader.FitAnimation();
+            Debug.Log("Reduce Curve");
+        }
+
+        if (GUILayout.Button("Add Curve"))
+        {
+            bvhLoader.AddCurve();
+            bvhLoader.FitAnimation();
+            Debug.Log("Add Curve");
         }
 
         if (GUILayout.Button("Play animation")) {
