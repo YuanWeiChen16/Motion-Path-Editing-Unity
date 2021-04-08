@@ -511,5 +511,6 @@ public class BVHRecorder : MonoBehaviour {
             captureFrame();
             first = false;
         }
+
     }
 }

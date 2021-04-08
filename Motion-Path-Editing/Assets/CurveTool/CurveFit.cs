@@ -128,7 +128,48 @@ namespace burningmime.curves
                 instance._u.Clear();
             }
         }
+        public static CubicBezier[] Fit(List<VECTOR> points, FLOAT maxError, ref List<VECTOR> pts, ref List<FLOAT> arclen)
+        {
+            if (maxError < EPSILON)
+                throw new InvalidOperationException("maxError cannot be negative/zero/less than epsilon value");
+            if (points == null)
+                throw new ArgumentNullException("points");
+            if (points.Count < 2)
+            {
+                pts = new List<VECTOR>();
+                arclen = new List<FLOAT>();
+                return NO_CURVES; // need at least 2 points to do anything
+            }
 
+            CurveFit instance = GetInstance();
+            try
+            {
+                // should be cleared after each run
+                Debug.Assert(instance._pts.Count == 0 && instance._result.Count == 0 &&
+                    instance._u.Count == 0 && instance._arclen.Count == 0);
+
+                // initialize arrays
+                instance._pts.AddRange(points);
+                instance.InitializeArcLengths(ref pts, ref arclen);
+                instance._squaredError = maxError * maxError;
+                
+                // Find tangents at ends
+                int last = points.Count - 1;
+                VECTOR tanL = instance.GetLeftTangent(last);
+                VECTOR tanR = instance.GetRightTangent(0);
+
+                // do the actual fit
+                instance.FitRecursive(0, last, tanL, tanR);
+                return instance._result.ToArray();
+            }
+            finally
+            {
+                instance._pts.Clear();
+                instance._result.Clear();
+                instance._arclen.Clear();
+                instance._u.Clear();
+            }
+        }
         /// <summary>
         /// Main fit function that attempts to fit a segment of curve and recurses if unable to.
         /// </summary>

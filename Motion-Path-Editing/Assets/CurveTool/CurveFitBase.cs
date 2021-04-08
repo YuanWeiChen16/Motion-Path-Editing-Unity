@@ -257,8 +257,27 @@ namespace burningmime.curves
                 arclen.Add(clen);
                 pp = np;
             }
-        }
 
+        }
+        protected void InitializeArcLengths(ref List<VECTOR> pts, ref List<FLOAT> arclen)
+        {
+            pts.AddRange(_pts);
+            arclen.AddRange(_arclen);
+            List<FLOAT> tempArc = _arclen;
+            int count = pts.Count;
+            arclen.Add(0);
+            tempArc.Add(0);
+            FLOAT clen = 0;
+            VECTOR pp = pts[0];
+            for (int i = 1; i < count; i++)
+            {
+                VECTOR np = pts[i];
+                clen += VectorHelper.Distance(pp, np);
+                arclen.Add(clen);
+                tempArc.Add(clen);
+                pp = np;
+            }
+        }
         /// <summary>
         /// Initializes the first (last - first) elements of u with scaled arc lengths.
         /// </summary>
