@@ -1465,7 +1465,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetAvatar: {fileID: 5624507010092554858}
-  filename: unitychan.bvh
+  filename: unitychan2.bvh
+  filename2: unitychan3.bvh
   blender: 1
   respectBVHTime: 1
   frameRate: 59.999985
@@ -1593,6 +1594,7 @@ MonoBehaviour:
   front: {fileID: 1758281486}
   cptPrefab: {fileID: 7961666665207325353, guid: f29501ef5e09d4b41b721de13299aa6b,
     type: 3}
+  UseBlend: 0
 --- !u!4 &1072296156
 Transform:
   m_ObjectHideFlags: 0

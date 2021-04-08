@@ -13,7 +13,7 @@ public class BVHAnimationLoaderEditor : Editor {
 
         if (GUILayout.Button("Load animation")) {
             bvhLoader.parseFile();
-            bvhLoader.loadAnimation();
+            bvhLoader.loadAnimation();            
             bvhLoader.test();
             Debug.Log("Loading animation done.");
         }
