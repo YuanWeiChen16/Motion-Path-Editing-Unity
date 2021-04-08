@@ -362,6 +362,9 @@ public class BVHAnimationLoader : MonoBehaviour {
         targetAvatar.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
         targetAvatar.transform.rotation = Quaternion.identity;
         
+        
+
+
         getCurves(prefix, bp.root, rootBone, true);
         
         targetAvatar.transform.position = targetAvatarPosition;

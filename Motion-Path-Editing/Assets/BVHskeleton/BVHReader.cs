@@ -186,7 +186,7 @@ public class BVHReader : MonoBehaviour
                 name = ParseAllUselessItems(name);
                 tempName = name[1];
 
-                tempJoint = GameObject.Instantiate(Joint);
+                tempJoint = new GameObject();//  GameObject.Instantiate(Joint);
 
                 // 將資料丟進去
                 script.Joints.Add(tempJoint);
@@ -196,7 +196,7 @@ public class BVHReader : MonoBehaviour
                 string[] info = tempJoint.transform.parent.name.Split(' ');
 
                 tempName = info[0] + " End";
-                tempJoint = GameObject.Instantiate(Joint);
+                tempJoint = new GameObject();//GameObject.Instantiate(Joint);
 
                 script.Joints.Add(tempJoint);
             }
