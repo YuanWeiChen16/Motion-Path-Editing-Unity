@@ -93,6 +93,20 @@ public class BVHPeople : MonoBehaviour
             
             Bones[i].SetPosition(0, Joints[info.StartIndex].transform.position);
             Bones[i].SetPosition(1, Joints[info.EndIndex].transform.position);
+
+            Bones[i].enabled = false;
+
+            Vector3 S = Joints[info.StartIndex].GetComponent<Transform>().position;
+            Vector3 E = Joints[info.EndIndex].GetComponent<Transform>().position;
+            float X =  S.z;
+            S.z =- S.y;
+            S.y = X;
+
+            X =  E.z;
+            E.z =- E.y;
+            E.y = X;
+
+            Debug.DrawLine(S,E, Color.blue);
         }
     }
 
