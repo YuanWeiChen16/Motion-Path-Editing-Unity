@@ -52,7 +52,7 @@ public class BVHAnimationLoader : MonoBehaviour
     public float error = 0.03f;
     public float error2 = 3;
     List<Vector3> pos = new List<Vector3>();
-List<Vector3> rot = new List<Vector3>();
+    List<Vector3> rot = new List<Vector3>();
     List<float> arcLen = new List<float>();
     List<Vector3> pts = new List<Vector3>();
     List<Vector3> dpts = new List<Vector3>();
@@ -61,7 +61,7 @@ List<Vector3> rot = new List<Vector3>();
     [Range(0, 359)]
     public int frameIndex = 0;
     public GameObject front;
-    public GameObject cptPrefab;    [Serializable]
+    public GameObject cptPrefab;[Serializable]
     public struct FakeDictionary
     {
         public string bvhName;
@@ -70,6 +70,7 @@ List<Vector3> rot = new List<Vector3>();
     [Header("Blend")]
     //blend
     public bool UseBlend = false;
+    public float BlendPersent = 0.5f;
     public BVHParser bp2 = null;
     public BVHParser bpFinal = null;
 
@@ -322,25 +323,56 @@ List<Vector3> rot = new List<Vector3>();
 
     private void BlendBVH(ref BVHParser.BVHBone node1, BVHParser.BVHBone node2)
     {
-        node1.offsetX = (node1.offsetX + node2.offsetX) / 2.0f;
-        node1.offsetY = (node1.offsetY + node2.offsetY) / 2.0f;
-        node1.offsetZ = (node1.offsetZ + node2.offsetZ) / 2.0f;
-        if (node1.channels[0].enabled == true)
-        {
-            int shortFrame = node1.channels[0].values.Length;
-            if (shortFrame > node2.channels[0].values.Length)
-            {
-                shortFrame = node2.channels[0].values.Length;
-            }
+        node1.offsetX = ((BlendPersent) * node1.offsetX + (1.0f - BlendPersent) * node2.offsetX) / 2.0f;
+        node1.offsetY = ((BlendPersent) * node1.offsetY + (1.0f - BlendPersent) * node2.offsetY) / 2.0f;
+        node1.offsetZ = ((BlendPersent) * node1.offsetZ + (1.0f - BlendPersent) * node2.offsetZ) / 2.0f;
 
-            for (int i = 0; i < node1.channelNumber; i++)
+        for (int k = 0; k < 3; k++)
+        {
+            if ((node1.channels[k].enabled == true) && (node2.channels[k].enabled == true))
             {
+                int shortFrame = node1.channels[k].values.Length;
+                if (shortFrame > node2.channels[k].values.Length)
+                {
+                    shortFrame = node2.channels[k].values.Length;
+                }
+
                 for (int j = 0; j < shortFrame; j++)
                 {
-                    node1.channels[i].values[j] = (node1.channels[i].values[j] + node2.channels[i].values[j]) / 2.0f;
+                    float tempAngle = ((BlendPersent) * node1.channels[k].values[j] + (1.0f - BlendPersent) * node2.channels[k].values[j]) / 2.0f;
+                    node1.channels[k].values[j] = tempAngle;
                 }
             }
         }
+
+
+        if ((node1.channels[3].enabled == true) && (node2.channels[3].enabled == true))
+        {
+            int shortFrame = node1.channels[3].values.Length;
+            if (shortFrame > node2.channels[3].values.Length)
+            {
+                shortFrame = node2.channels[3].values.Length;
+            }
+            for (int j = 0; j < shortFrame; j++)
+            {
+                Vector3 eulerBVH1 = new Vector3(wrapAngle(node1.channels[3].values[j]), wrapAngle(node1.channels[4].values[j]), wrapAngle(node1.channels[5].values[j]));
+                Vector3 eulerBVH2 = new Vector3(wrapAngle(node2.channels[3].values[j]), wrapAngle(node2.channels[4].values[j]), wrapAngle(node2.channels[5].values[j]));
+                Quaternion rot1 = fromEulerZXY(eulerBVH1);
+                Quaternion rot2 = fromEulerZXY(eulerBVH2);
+
+                //rot1 = rot1 * rot2;
+                rot1 = Quaternion.Lerp(rot1, rot2, BlendPersent);
+                Vector3 temp = eulerZXY(new Vector4(rot1.x, rot1.y, rot1.z, rot1.w));
+                node1.channels[3].values[j] = wrapAngle(temp.x);
+                node1.channels[4].values[j] = wrapAngle(temp.y);
+                node1.channels[5].values[j] = wrapAngle(temp.z);
+            }
+        }
+
+
+
+
+
 
         //for children
         for (int i = 0; i < node1.children.Count; i++)
@@ -348,7 +380,7 @@ List<Vector3> rot = new List<Vector3>();
             BVHParser.BVHBone nodeCh1 = node1.children[i];
             BVHParser.BVHBone nodeCh2 = node2.children[i];
             BlendBVH(ref nodeCh1, nodeCh2);
-        }       
+        }
     }
 
     public static string getPathBetween(Transform target, Transform root, bool skipFirst, bool skipLast)
@@ -405,7 +437,7 @@ List<Vector3> rot = new List<Vector3>();
         {
             throw new InvalidOperationException("No BVH file has been parsed.");
         }
-        
+
         //blend
         if (UseBlend)
         {
@@ -414,7 +446,7 @@ List<Vector3> rot = new List<Vector3>();
                 throw new InvalidOperationException("No BVH2 file has been parsed.");
             }
             BlendBVH(ref bp.root, bp2.root);
-        }       
+        }
 
         if (nameMap == null)
         {
@@ -842,7 +874,7 @@ List<Vector3> rot = new List<Vector3>();
 
     public void reduceCurve()
     {
-        if(curves.Count >= 2)
+        if (curves.Count >= 2)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -870,8 +902,11 @@ List<Vector3> rot = new List<Vector3>();
         createControlObj();
     }
 
-    void Start () {
-        if (autoStart) {            autoPlay = true;
+    void Start()
+    {
+        if (autoStart)
+        {
+            autoPlay = true;
             parseFile();
             loadAnimation();
         }
